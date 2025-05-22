@@ -16,7 +16,7 @@ const { logger } = require('./middleware/logEvents');
 const errorHandler = require('./middleware/errorHandler');
 const credentials = require('./middleware/credentials');
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 10000;
 
 //connect to MongoDB
 connectDB();
@@ -48,18 +48,18 @@ app.use('/', express.static(path.join(__dirname, '/public'))); //?
 app.use('/user', require('./routes/userRoutes'));
 app.use('/admin', require('./routes/adminRoutes'));
 app.use('/refresh', require('./routes/refresh'));
-app.use('/otp',require('./routes/otpRoutes.js'))
+app.use('/otp', require('./routes/otpRoutes.js'))
 
 //app.use(verifyJWT); after this all routes will be verified ?
 
 app.all("*", (req, res) => {
   res.status(404);
   if (req.accepts('html')) {
-      res.sendFile(path.join(__dirname, 'views', '404.html'));
+    res.sendFile(path.join(__dirname, 'views', '404.html'));
   } else if (req.accepts('json')) {
-      res.json({ "error": "404 Not Found" });
+    res.json({ "error": "404 Not Found" });
   } else {
-      res.type('txt').send("404 Not Found");
+    res.type('txt').send("404 Not Found");
   }
 });
 
